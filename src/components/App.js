@@ -1,6 +1,7 @@
 import React from "react";
 import "../App.css"
 import { Route, Switch, NavLink } from "react-router-dom";
+import Home from './Home.js'
 
 const App = () => {
   return (
@@ -12,7 +13,7 @@ const App = () => {
           <NavLink to='/' className='help link'>Help</NavLink>
         </div>
       </header>
-
+      <Home />
       
       {/* <p>You can remove this code - and - create your own header</p> */}
     </>
