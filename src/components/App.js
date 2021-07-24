@@ -1,19 +1,20 @@
 import React from "react";
+import "../App.css"
 import { Route, Switch, NavLink } from "react-router-dom";
 
 const App = () => {
   return (
     <>
-      <header>
-        <h1>Lambda Eats</h1>
-        <nav>
-          <NavLink to='/'>Home</NavLink>
-          <NavLink to='/'>Help</NavLink>
-        </nav>
+      <header className='App-header'>
+        <h1>LAMBDA EATS</h1>
+        <div className='nav'>
+          <NavLink exact to='/' className='home link'>Home</NavLink>
+          <NavLink to='/' className='help link'>Help</NavLink>
+        </div>
       </header>
 
       
-      <p>You can remove this code - and - create your own header</p>
+      {/* <p>You can remove this code - and - create your own header</p> */}
     </>
   );
 };
