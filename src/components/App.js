@@ -14,10 +14,11 @@ const App = () => {
           <NavLink to='/' className='help link'>Help</NavLink>
         </div>
       </header>
-      {/* <Home /> */}
-      <Form />
-      
-      {/* <p>You can remove this code - and - create your own header</p> */}
+
+      <Switch>
+        <Route path='/pizza' component={Form} />
+        <Route path='/' component={Home} />
+      </Switch>
     </>
   );
 };
