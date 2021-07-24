@@ -2,9 +2,7 @@ import React, {useState, useEffect} from "react";
 import "./Form.css"
 import axios from "axios";
 import Styled from 'styled-components'
-// import * as yup from "yup";
-
-
+import * as yup from "yup";
 
 // Styled Components
 const Headings = Styled.div`
@@ -21,7 +19,7 @@ const RadioInput = Styled.input`
 `
 
 // this let's our code know what key's to expect - what we will 'name' our inputs
-const initialValues = { size: "", sauce: "", toppings: "", substitute: '', gfree: false, special: '', name: '' }
+const initialValues = { size: "", sauce: "", toppings: "", substitute: false, special: '', name: '' }
 const toppings = [
     {id: 1, name: 'toppings', value: 'pepperoni'},
     {id: 2, name: 'toppings', value: 'sausage'},
@@ -38,48 +36,18 @@ const toppings = [
     {id: 13, name: 'toppings', value: 'pineapple'},
     {id: 14, name: 'toppings', value: 'extra cheese'}
 ]
+const schema = yup.object().shape({
+    name: yup.string().min(2,"name must be at least 2 characters"),
+    size: yup.string().oneOf(["s", "m", "l"], "please select a size"),
+    sauce: yup.string().oneOf(["Original Red",'Garlic Ranch', 'BBQ Sauce', 'Spinach Alfredo'], "please select a sauce"),
+});
 
 const Form = ()  => {
     const [form, setForm] = useState(initialValues);
-    const [submitButtonState, setSubmitButtonState] = useState(false);
-
+    const [disabled, setDisabled] = useState(false);
+    const [errors, setErrors] = useState(initialValues)
     // const [isChecked, setIsChecked] = useState({});
     // const [toppingData, setToppingData] = useState(toppings)
-
-    //Declare error state variables, init to values
-    // const [errors, setErrors] = useState
-    // ({
-    //     //Declare values init to string/bool
-    //     name: " ",
-    //     size: " ",
-    //     special: " ",
-    //     meat: false,
-    //     veggies: false,
-    //     poultry: false,
-    //     fruit: false,
-    // });
-
-
-
-
-
-    //Define form schema
-    // const formSchema = yup.object().shape
-    // ({
-    //     //Name value: string, min params
-    //     name: yup.string().min(2,"name must be at least 2 characters"),
-        
-    //     //Size value: string, oneOf params
-    //     size: yup.string().oneOf(["s", "m", "l"], "please select a size"),
-        
-    //     //Toppings: string
-    //     special: yup.string(),
-    //     meat: yup.string(),
-    //     veggies: yup.string(),
-    //     poultry: yup.string(),
-    //     fruit: yup.string(),
-    // });
-
 
     // HANDLER FUNCTIONS
     // const handleSingleCheck = (event) => {
@@ -93,81 +61,42 @@ const Form = ()  => {
     //     console.log(newData);
     //     setToppingData(newData);
     // }
-
-
-    // const changeValidator = (event) => 
-    // {
-    //   yup
-    //     //Reach formSchema and event
-    //     .reach(formSchema, event.target.name)
-        
-    //     //Validate checkbox
-    //     .validate(
-    //       event.target.type === "checkbox" ? event.target.checked : event.target.value
-    //     )
-        
-    //     //.then setErrors
-    //     .then(() => 
-    //     {
-    //       setErrors({ ...errors, [event.target.name]: "" });
-    //     })
-        
-    //     //.catch, log the error, set the error
-    //     .catch((error) => 
-    //     {
-    //       setErrors({ ...errors, [event.target.name]: error.errors[0] });
-    //     });
-    // };
-
-     
-    //formSchema useEffect
-    // useEffect(() => 
-    // {
-    //     formSchema.isValid(form).then((isFormValid) => 
-    //     {
-    //       setSubmitButtonState(isFormValid);
-    //     });
-
-    //     //Dependency arrays
-    // }, [form]);
-
-
-
-    //Change event handler
-    const changeHandler = (event) =>
-    {
-        //Event.persist 
-        event.persist();
-
-        //Call change validator, pass in event
-        // changeValidator(event);
-
-        //Set form
-        setForm
-        ({
-            //Spread operator, target
-            ...form, [event.target.name]: 
-            event.target.type ===  "checkbox" ? event.target.checked : event.target.value
-        });
-
+    
+    const setFormErrors = (name, value) => {
+      yup
+        .reach(schema, name)
+        .validate(value === "checkbox" ? checked : value)
+        .then(() => setErrors({ ...errors, [name]: "" }))
+        .catch((err) => setErrors({ ...errors, [name]: err.errors[0] }));
     };
 
-    //Submit handler
-    const submitHandler = (event) =>
-    {
-        //Prevent default behavior on submit
-        event.preventDefault();
+    //schema useEffectv
+    useEffect(() => {
+        schema.isValid(form).then((isFormValid) => 
+        {
+          setDisabled(isFormValid);
+        });
 
-        //Axios
+        //Dependency arrays
+    }, [form]);
+
+
+
+    const change = (event) => {
+        const { checked, value, name, type } = event.target;
+        const valueToUse = type === "checkbox" ? checked : value;
+        setFormErrors(name, valueToUse);
+        setForm({ ...form, [name]: valueToUse });
+      };
+
+    const submitHandler = (event) => {
+        event.preventDefault();
         axios
-        //Post to api with form payload
         .post("https://reqres.in/api/orders", form)
-        //then get response, log changes
         .then((response) => console.log("submit changes", response));
     };
    
 
-    //Return function
     return(
         <div className='pizza-container'>
             <form id="pizza-form" onSubmit={submitHandler} >
@@ -183,11 +112,8 @@ const Form = ()  => {
                     <option value=''>Select</option>
                     <option value='s'>Small</option>
                     <option value='m'>Medium</option>
-                    <option value=';'>Large</option>
+                    <option value='l'>Large</option>
                 </select>
-                {/* Error reporting */}
-                {/* <p>{errors.size}</p>  */}
-                
 
                 <Headings>
                     <h5>Choice of Sauce</h5>
@@ -221,7 +147,7 @@ const Form = ()  => {
                     checked={form.sauce === "Spinach Alfredo"}
                     /><label>Spinach Alfredo</label><br/>
                 </>
-
+                
                 <Headings>
                     <h5>Add Toppings</h5>
                     <p>Choose up to 10.</p>
@@ -267,7 +193,7 @@ const Form = ()  => {
                     placeholder="Name for the order.">
                 </TextInput>
                 <div>
-                    <button id = "order-button" disabled = {!submitButtonState}>Add to Order</button>
+                    <button id = "order-button" disabled = {!disabled}>Add to Order</button>
                 </div>
 
             </form>

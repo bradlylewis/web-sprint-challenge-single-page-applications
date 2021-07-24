@@ -41,3 +41,6 @@ select {
 #bottom-radio {
     margin-bottom: 1.5rem;
 }
+#order-button {
+    margin-left: 1rem;
+}
