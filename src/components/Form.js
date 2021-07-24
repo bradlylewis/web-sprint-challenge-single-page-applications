@@ -9,8 +9,8 @@ import Pizza from './Assets/Pizza.jpg'
 
 
 const Headings = Styled.div`
-    background-color: #FF8F86;
-    padding: 0.5rem 1.5rem;
+    background-color: #e0e0e0;
+    padding: 0.5rem 1rem;
 `
 
 //Main function definition, empty () param
@@ -152,6 +152,12 @@ const Form = ()  =>
                 <h5>Choice of Size</h5>
                 <p>Required.</p>
             </Headings>
+            <select id="size-dropdown" name="size" value={form.size} onChange={changeHandler}>
+                <option value=''>Select</option>
+                <option value='s'>Small</option>
+                <option value='m'>Medium</option>
+                <option value=';'>Large</option>
+            </select>
             
 
             <Headings>
@@ -176,98 +182,7 @@ const Form = ()  =>
 
 
 
-                <div className = "choices">
-                    <label className="label" htmlFor="name"> Name:
-                        <input
-                        type = "text"
-                        id = "name-input"
-                        name = "name"
-                        value = {form.name}
-                        onChange = {changeHandler}
-                        placeholder = "name goes here"
-                        />
-                    {/* Error reporting */}
-                    {/* <p>{errors.name}</p> */}
-                    </label>
-
-                </div>
-
-                <div className = "choices">
-                    {/* Size label and select for dropdown choices*/}
-                    <label className = "label" htmlFor = "size"> Size: 
-                        <select 
-                        id = "size-dropdown"
-                        name = "size"
-                        value = {form.size}
-                        onChange = {changeHandler} 
-                        >
-                            <option value = "">***Choose Your Size***!</option>
-                            <option value = "s">Small</option>
-                            <option value = "m">Medium</option>
-                            <option value = "l">Large</option>
-                        </select>
-
-                    {/* Error reporting */}
-                    {/* <p>{errors.size}</p>  */}
-                    </label>
-
-                    {/* Toppings labels and checkbox choices */}
-                    {/* Meat Checkbox*/}
-                    <label htmlFor = "meat"> Meat
-                        <input className = "box"
-                        type = "checkbox"
-                        name = "meat"
-                        checked = {form.meat}
-                        onChange = {changeHandler}
-                        />
-                    </label>
-
-                    {/* Veggies Checkbox */}
-                    <label htmlFor = "veggies"> Veggie
-                        <input className = "box"
-                        type = "checkbox"
-                        name = "veggies"
-                        checked = {form.veggies}
-                        onChange = {changeHandler}
-                        />
-                    </label>
-
-                    {/* Poultry Checkbox */}
-                    <label htmlFor = "poultry"> Poultry
-                        <input className = "box"
-                        type = "checkbox"
-                        name = "poultry"
-                        checked = {form.poultry}
-                        onChange = {changeHandler}
-                        />
-                    </label>
-
-                    {/* Fruit Checkbox */}
-                    <label htmlFor = "fruit"> Fruit
-                        <input className = "box"
-                        type = "checkbox"
-                        name = "fruit"
-                        checked = {form.fruit}
-                        onChange = {changeHandler}
-                        />
-                    </label>
-
-                    {/* Special Instructions */}
-                    <label className = "label" htmlFor = "special"> Customize Your Pie:
-                        <input 
-                        type = "text"
-                        id = "special-text"
-                        name = "special"
-                        value = {form.special}
-                        onChange = {changeHandler}
-                        placeholder = "Special Instructions"
-                        />
-                    </label>
-                    <button id = "order-button" disabled = {!submitButtonState}>
-                        CLICK TO SUBMIT
-                    </button>
-                </div>
-            </form>
+                
         </div>
     );
 };

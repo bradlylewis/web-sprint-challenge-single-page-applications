@@ -13,7 +13,7 @@
     border: 2px solid black;
 }
 .form-title{
-    margin: 0.5rem 1.5rem;
+    margin: 0.5rem 1rem;
 }
 h4 {
     text-align: center;
@@ -22,6 +22,7 @@ h4 {
 }
 p {
     font-size: 0.8rem;
+    color: #f44336;
 }
 .pizza-image {
     background: url('./Assets/Pizza.jpg');
@@ -29,4 +30,8 @@ p {
     background-size: 100%;
     height: 10em;
     margin-bottom: 1rem;
+}
+select {
+    margin: 0.5rem 1rem 0.75rem 1rem;
+    padding: 0.15rem 6rem 0.15rem 0.25rem;
 }
