@@ -2,6 +2,7 @@ import React from "react";
 import "../App.css"
 import { Route, Switch, NavLink } from "react-router-dom";
 import Home from './Home.js'
+import Form from './Form.js'
 
 const App = () => {
   return (
@@ -13,7 +14,8 @@ const App = () => {
           <NavLink to='/' className='help link'>Help</NavLink>
         </div>
       </header>
-      <Home />
+      {/* <Home /> */}
+      <Form />
       
       {/* <p>You can remove this code - and - create your own header</p> */}
     </>
