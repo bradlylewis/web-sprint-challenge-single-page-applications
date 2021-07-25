@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./Form.css"
 import Styled from 'styled-components'
 
@@ -17,31 +17,26 @@ const TextInput = Styled.input`
 const RadioInput = Styled.input`
     margin: 0.5rem 0.5rem 0.75rem 1rem;
 `
-const toppings = [
-    { name: 'pepperoni', value: 'Pepperoni'}
+
+
+const toppingsData = [
+    { name: 'diced tomatos' }, { name: 'sausage' }, { name: 'black olives' }, { name: 'canadian bacon' },
+    { name: 'roasted garlic' }, { name: 'spicy italian sausage' }, { name: 'artichoke hearts' }, 
+    { name: 'grilled chicken' }, { name: 'three cheese' }, { name: 'onions' }, { name: 'pineapple' },
+    { name: 'green pepper' }, { name: 'extra cheese' }
 ]
 
-
-
-// <div className="checkbox-container">
-// <input
-//     type='checkbox'
-//     name='pepperoni'
-//     className='check'
-//     value='Pepperoni'
-//     onChange={change}
-//     checked={formValues.pepperoni === 'Pepperoni'}
-// />
-// <div className="choice">Pepperoni</div>
-// </div>
-
 export default function Form(props) {
+    const [toppings] = useState(toppingsData)
+
     const { formValues, change, submit, disabled, errors } = props
 
     const onSubmit = event => {
         event.preventDefault()
         submit()
     }
+
+
 
     return(
         <div className='pizza-container'>
@@ -65,57 +60,80 @@ export default function Form(props) {
                     <h5>Choice of Sauce</h5><div className='errors'>{errors.sauce}</div>
                     <p>Required.</p>
                 </Headings>
-                <>
+                <div className="radio-buttons-container">
                     <RadioInput
-                        className="choice"
                         type='radio'
                         id='top-radio'
                         name='sauce'
                         value='Original Red'
                         onChange={change}
                         checked={formValues.sauce === "Original Red"}
-                    /><label>Original Red</label><br/>
+                    /><label className="choice">Original Red</label><br/>
                     <RadioInput
-                        className="choice"
                         type='radio'
                         name='sauce'
                         value='Garlic Ranch'
                         onChange={change}
                         checked={formValues.sauce === "Garlic Ranch"}
-                    /><label>Garlic Ranch</label><br/>
+                    /><label className="choice">Garlic Ranch</label><br/>
                     <RadioInput
-                        className="choice"
                         type='radio'
                         name='sauce'
                         value='BBQ Sauce'
                         onChange={change}
                         checked={formValues.sauce === "BBQ Sauce"}
-                    /><label>BBQ Sauce</label><br/>
+                    /><label className="choice">BBQ Sauce</label><br/>
                     <RadioInput
-                        className="choice"
                         type='radio'
                         id='bottom-radio'
                         name='sauce'
                         value='Spinach Alfredo'
                         onChange={change}
                         checked={formValues.sauce === "Spinach Alfredo"}
-                    /><label>Spinach Alfredo</label><br/>
-                </>
+                    /><label className="choice">Spinach Alfredo</label><br/>
+                </div>
                 
                 <Headings>
                     <h5>Add Toppings</h5>
                     <p>Choose up to 10.</p>
                 </Headings>
-                <div className="checkbox-container">
-                    <input
+                <div className="checkbox-wrapper">
+                    <div className="checkbox-container">
+                        <input
+                            type='checkbox'
+                            name='pepperoni'
+                            className='check'
+                            onChange={change}
+                            checked={formValues.pepperoni}
+                        />
+                        <div className="choice">Pepperoni</div>
+                    </div>
+
+                    <div className="checkbox-container">
+                        <input
+                            type='checkbox'
+                            name={toppingsData.name}
+                            className='check'
+                            onChange={change}
+                            checked={formValues.sausage}
+                        />
+                        <div className="choice">{toppingsData[0].name}</div>
+                    </div>
+
+                {toppings.map((topping, idx, props) => {
+                    const { change } = props
+
+                    return (
+                    <div key={idx} className="checkbox-container">
+                        <input
                         type='checkbox'
-                        name='pepperoni'
+                        name={topping.name}
                         className='check'
-                        value='Pepperoni'
                         onChange={change}
-                        checked={formValues.pepperoni === 'Pepperoni'}
-                    />
-                    <div className="choice">Pepperoni</div>
+                        checked={formValues.name === `${topping.name}`}
+                    /><div className="choice" style={{textTransform: "capitalize"}} >{topping.name}</div>
+                    </div>
+                )})}
                 </div>
 
                 <Headings>
@@ -147,7 +165,7 @@ export default function Form(props) {
                 </TextInput>
                 <div className='errors name'>{errors.name}</div>
                 <div>
-                    <button id = "order-button" disabled={disabled}>Add to Order</button>
+                    <button id="order-button" disabled={disabled}>Add to Order</button>
                 </div>
             </form>
 
