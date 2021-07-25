@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import "./Form.css"
-import axios from "axios";
 import Styled from 'styled-components'
-import * as yup from "yup";
+
+
 
 // Styled Components
 const Headings = Styled.div`
@@ -17,98 +17,44 @@ const TextInput = Styled.input`
 const RadioInput = Styled.input`
     margin: 0.5rem 0.5rem 0.75rem 1rem;
 `
-
-// this let's our code know what key's to expect - what we will 'name' our inputs
-const initialValues = { size: "", sauce: "", toppings: "", substitute: false, special: '', name: '' }
 const toppings = [
-    {id: 1, name: 'toppings', value: 'pepperoni'},
-    {id: 2, name: 'toppings', value: 'sausage'},
-    {id: 3, name: 'toppings', value: 'canadian bacon'},
-    {id: 4, name: 'toppings', value: 'spicy italian sausage'},
-    {id: 5, name: 'toppings', value: 'grilled chicken'},
-    {id: 6, name: 'toppings', value: 'onions'},
-    {id: 7, name: 'toppings', value: 'green pepper'},
-    {id: 8, name: 'toppings', value: 'diced tomatos'},
-    {id: 9, name: 'toppings', value: 'black olives'},
-    {id: 10, name: 'toppings', value: 'roasted garlic'},
-    {id: 11, name: 'toppings', value: 'artichoke hearts'},
-    {id: 12, name: 'toppings', value: 'three cheese'},
-    {id: 13, name: 'toppings', value: 'pineapple'},
-    {id: 14, name: 'toppings', value: 'extra cheese'}
+    { name: 'pepperoni', value: 'Pepperoni'}
 ]
-const schema = yup.object().shape({
-    name: yup.string().min(2,"name must be at least 2 characters"),
-    size: yup.string().oneOf(["s", "m", "l"], "please select a size"),
-    sauce: yup.string().oneOf(["Original Red",'Garlic Ranch', 'BBQ Sauce', 'Spinach Alfredo'], "please select a sauce"),
-});
-
-const Form = ()  => {
-    const [form, setForm] = useState(initialValues);
-    const [disabled, setDisabled] = useState(false);
-    const [errors, setErrors] = useState(initialValues)
-    // const [isChecked, setIsChecked] = useState({});
-    // const [toppingData, setToppingData] = useState(toppings)
-
-    // HANDLER FUNCTIONS
-    // const handleSingleCheck = (event) => {
-    //     setIsChecked({ ...isChecked, [event.target.name]: event.target.checked})
-    // }
-    // const onDelete = () => {
-    //     console.log(isChecked);
-    //     const newData = toppingData.filter(
-    //         item => !Object.keys(isChecked).includes(item.name)
-    //     );
-    //     console.log(newData);
-    //     setToppingData(newData);
-    // }
-    
-    const setFormErrors = (name, value) => {
-      yup
-        .reach(schema, name)
-        .validate(value === "checkbox" ? checked : value)
-        .then(() => setErrors({ ...errors, [name]: "" }))
-        .catch((err) => setErrors({ ...errors, [name]: err.errors[0] }));
-    };
-
-    //schema useEffectv
-    useEffect(() => {
-        schema.isValid(form).then((isFormValid) => 
-        {
-          setDisabled(isFormValid);
-        });
-
-        //Dependency arrays
-    }, [form]);
 
 
 
-    const change = (event) => {
-        const { checked, value, name, type } = event.target;
-        const valueToUse = type === "checkbox" ? checked : value;
-        setFormErrors(name, valueToUse);
-        setForm({ ...form, [name]: valueToUse });
-      };
+// <div className="checkbox-container">
+// <input
+//     type='checkbox'
+//     name='pepperoni'
+//     className='check'
+//     value='Pepperoni'
+//     onChange={change}
+//     checked={formValues.pepperoni === 'Pepperoni'}
+// />
+// <div className="choice">Pepperoni</div>
+// </div>
 
-    const submitHandler = (event) => {
-        event.preventDefault();
-        axios
-        .post("https://reqres.in/api/orders", form)
-        .then((response) => console.log("submit changes", response));
-    };
-   
+export default function Form(props) {
+    const { formValues, change, submit, disabled, errors } = props
+
+    const onSubmit = event => {
+        event.preventDefault()
+        submit()
+    }
 
     return(
         <div className='pizza-container'>
-            <form id="pizza-form" onSubmit={submitHandler} >
+            <form id="pizza-form" onSubmit={onSubmit} >
                 <h4>Build Your Own Pizza</h4>
                 <div className='pizza-image'>{/*Empty for pizza banner*/}</div>
                 <div className='form-title'>Build Your Own Pizza</div>
 
                 <Headings>
-                    <h5>Choice of Size</h5>
+                    <h5>Choice of Size</h5><div className='errors'>{errors.size}</div>
                     <p>Required.</p>
                 </Headings>
-                <select id="size-dropdown" name="size" value={form.size} onChange={changeHandler}>
+                <select id="size-dropdown" name="size" value={formValues.size} onChange={change}>
                     <option value=''>Select</option>
                     <option value='s'>Small</option>
                     <option value='m'>Medium</option>
@@ -116,35 +62,43 @@ const Form = ()  => {
                 </select>
 
                 <Headings>
-                    <h5>Choice of Sauce</h5>
+                    <h5>Choice of Sauce</h5><div className='errors'>{errors.sauce}</div>
                     <p>Required.</p>
                 </Headings>
                 <>
                     <RadioInput
-                    type='radio'
-                    id='top-radio'
-                    name='sauce'
-                    value='Original Red'
-                    checked={form.sauce === "Original Red"}
+                        className="choice"
+                        type='radio'
+                        id='top-radio'
+                        name='sauce'
+                        value='Original Red'
+                        onChange={change}
+                        checked={formValues.sauce === "Original Red"}
                     /><label>Original Red</label><br/>
                     <RadioInput
-                    type='radio'
-                    name='sauce'
-                    value='Garlic Ranch'
-                    checked={form.sauce === "Garlic Ranch"}
+                        className="choice"
+                        type='radio'
+                        name='sauce'
+                        value='Garlic Ranch'
+                        onChange={change}
+                        checked={formValues.sauce === "Garlic Ranch"}
                     /><label>Garlic Ranch</label><br/>
                     <RadioInput
-                    type='radio'
-                    name='sauce'
-                    value='BBQ Sauce'
-                    checked={form.sauce === "BBQ Sauce"}
+                        className="choice"
+                        type='radio'
+                        name='sauce'
+                        value='BBQ Sauce'
+                        onChange={change}
+                        checked={formValues.sauce === "BBQ Sauce"}
                     /><label>BBQ Sauce</label><br/>
                     <RadioInput
-                    type='radio'
-                    id='bottom-radio'
-                    name='sauce'
-                    value='Spinach Alfredo'
-                    checked={form.sauce === "Spinach Alfredo"}
+                        className="choice"
+                        type='radio'
+                        id='bottom-radio'
+                        name='sauce'
+                        value='Spinach Alfredo'
+                        onChange={change}
+                        checked={formValues.sauce === "Spinach Alfredo"}
                     /><label>Spinach Alfredo</label><br/>
                 </>
                 
@@ -152,18 +106,17 @@ const Form = ()  => {
                     <h5>Add Toppings</h5>
                     <p>Choose up to 10.</p>
                 </Headings>
-                {/* {toppingData.map((topping,index) => (
-                    <div key={index}>
-                        <label>{toppings.name}</label>
-                        <input
+                <div className="checkbox-container">
+                    <input
                         type='checkbox'
-                        name={toppings.name}
-                        checked={isChecked[topping.name]}
-                        onChange={handleSingleCheck}
-                        />
-                    </div>
-                ))} */}
-
+                        name='pepperoni'
+                        className='check'
+                        value='Pepperoni'
+                        onChange={change}
+                        checked={formValues.pepperoni === 'Pepperoni'}
+                    />
+                    <div className="choice">Pepperoni</div>
+                </div>
 
                 <Headings>
                     <h5>Choice of Substitute</h5>
@@ -178,8 +131,8 @@ const Form = ()  => {
                     type='text'
                     id='special-text'
                     name='special'
-                    value={form.value}
-                    onChange={changeHandler}
+                    value={formValues.value}
+                    onChange={change}
                     placeholder="Anything else you'd like to add?">
                 </TextInput>
 
@@ -188,18 +141,16 @@ const Form = ()  => {
                     type='text'
                     id='name-input'
                     name='name'
-                    value={form.value}
-                    onChange={changeHandler}
+                    value={formValues.value}
+                    onChange={change}
                     placeholder="Name for the order.">
                 </TextInput>
+                <div className='errors name'>{errors.name}</div>
                 <div>
-                    <button id = "order-button" disabled = {!disabled}>Add to Order</button>
+                    <button id = "order-button" disabled={disabled}>Add to Order</button>
                 </div>
-
             </form>
+
         </div>
     );
 };
-
-//Export statement
-export default Form;

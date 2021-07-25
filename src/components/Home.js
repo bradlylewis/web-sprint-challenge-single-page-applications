@@ -11,6 +11,7 @@ const PizzaBackground = Styled.div`
     background-repeat: no-repeat;
     background-size: 100%;
     height: 45vh;
+    /* border: 2px solid red; */
 `
 
 const OrderButton = Styled.button`
@@ -40,7 +41,7 @@ export default function Home() {
   return (
     <PizzaBackground className = "home-wrapper">
         <div>
-            <OrderButton className="order-button" id="order-pizza" onClick={routeToForm}>
+            <OrderButton id="order-pizza" className="order-button"  onClick={routeToForm}>
                 Pizza?
             </OrderButton>
         </div>

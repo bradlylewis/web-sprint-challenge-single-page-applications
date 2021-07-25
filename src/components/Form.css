@@ -9,7 +9,7 @@
 #pizza-form {
     padding: 0.5rem 0;
     width:50vw;
-    height: 80vh;
+    height: fit-content;
     border: 2px solid black;
 }
 .form-title{
@@ -23,6 +23,15 @@ h4 {
 p {
     font-size: 0.8rem;
     color: #f44336;
+}
+.errors {
+    /* margin-left: 1rem; */
+    color: white;
+    background-color: red;
+    width: fit-content;
+}
+.name {
+    margin-left: 1rem;
 }
 .pizza-image {
     background: url('./Assets/Pizza.jpg');
@@ -43,4 +52,17 @@ select {
 }
 #order-button {
     margin-left: 1rem;
+}
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    border: 1px solid red;
+    padding: 0 1rem;
+}
+.check {
+    margin-right: 1rem;
+}
+.choice {
+    font-size: 0.8em;
 }
