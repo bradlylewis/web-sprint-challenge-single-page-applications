@@ -8,13 +8,12 @@ import Home from './components/Home.js'
 import Form from './components/Form.js'
 
 // this let's our code know what key's to expect - what we will 'name' our inputs
-const initialValues = { size: "", sauce: "", pepperoni: false, sausage: false, 'diced tomatoes': false,
-  'black olives': false, 'canadian bacon': false, 'roasted garlic': false, 'spicy italian sausage': false,
-  'artichoke hearts': false, 'grilled chicken': false, 'three cheese': false, 'onions': false,
-  pineapple: false, 'green pepper': false, 'extra cheese': false, 'diced tomatos': false,name: '' }
+const initialValues = { size: "", sauce: "", pepperoni: false, sausage: false, dicedTomatos: false,
+  blackOlives: false, canadianBacon: false, roastedGarlic: false, spicyItalianSausage: false,
+  artichokeHearts: false, grilledChicken: false, threeCheese: false, onions: false,
+  pineapple: false, greenPepper: false, extraCheese: false, special: '', name: "" }
 
 const initialErrors = { name: '', size: ''}
-
 
 export default function App() {
   const [orders, setOrders] = useState([])
@@ -25,7 +24,7 @@ export default function App() {
 
 // HELPERS ////////////////////////////////////////////////////////
 // Post a new user to API (callback)
-const postNewOrder = newOrder => {
+const orderButton = newOrder => {
   axios.post('https://reqres.in/api/orders', newOrder)
   .then(res => {
     setOrders([res.data.data, ...orders])
@@ -43,44 +42,40 @@ const setFormErrors = (name, value) => {
   reach(formSchema, name)
     .validate(value)
     .then(() => setErrors({ ...errors, [name]: '' }))
-    .catch((err) => setErrors({ ...errors, [name]: err.errors[0] }));
+    .catch(err => setErrors({ ...errors, [name]: err.errors[0] }))
 };
 
 // HANDLER FUNCTIONS //////////////////////////////////////////////
-const change = (event) => {
-  const { value, name, type, checked } = event.target;
-  const valueToUse = type === 'checkbox' ? checked : value;
-  setFormErrors(name, valueToUse);
-  setFormValues({ ...formValues, [name]: valueToUse });
+const inputChange = (name, value) => {
+  setFormErrors(name, value);
+  setFormValues({ ...formValues,[name]: value })
 };
 
 const formSubmit = (event) => {
+  
   const newOrder = {
     size: formValues.size,
     sauce: formValues.sauce,
     pepperoni: formValues.pepperoni,
     sausage: formValues.sausage,
-    'diced tomatos': formValues['diced tomatos'],
-    'black olives': formValues['black olives'],
-    'canadian bacon': formValues['canadian bacon'],
-    'roasted garlic': formValues['roasted garlic'],
-    'spicy italian sausage': formValues['spicy italian sausage'],
-    'artichoke hearts': formValues['artichoke hearts'],
-    'grilled chicken': formValues['grilled chicken'],
-    'three cheese': formValues['three cheese'],
+    dicedTomatos: formValues.dicedTomatos,
+    blackOlives: formValues.blackOlives,
+    canadianBacon: formValues.canadianBacon,
+    roastedGarlic: formValues.roastedGarlic,
+    spicyItalianSausage: formValues.spicyItalianSausage,
+    artichokeHearts: formValues.artichokeHearts,
+    grilledChicken: formValues.grilledChicken,
+    threeCheese: formValues.threeCheese,
     onions: formValues.onions,
     pineapple: formValues.pineapple,
-    'green pepper': formValues['green pepper'],
-    'extra cheese': formValues['extra cheese'],
-    // substitute: formValues.substitute,
+    greenPepper: formValues.greenPepper,
+    extraCheese: formValues.extraCheese,
     special: formValues.special,
     name: formValues.name
   }
   // Post new friend on submit
-  postNewOrder(newOrder)
+  orderButton(newOrder)  
 }
-
-
 
 // SIDE EFFECTS // Can't get this to work!!!
 // useEffect(() => {
@@ -118,7 +113,7 @@ useEffect(() => {
         <Route path='/pizza'>
           <Form
             formValues={formValues}
-            change={change}
+            change={inputChange}
             submit={formSubmit}
             disabled={disabled}
             errors={errors}

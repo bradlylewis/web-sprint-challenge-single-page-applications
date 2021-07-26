@@ -18,29 +18,29 @@ const formSchema = yup.object().shape({
         .boolean(),
     sausage: yup
         .boolean(),
-    'diced tomatos': yup
+    dicedTomatos: yup
         .boolean(),
-    'black olives': yup
+    blackOlives: yup
         .boolean(),
-    'canadian bacon': yup
+    canadianBacon: yup
         .boolean(),
-    'roasted garlic': yup
+    roastedGarlic: yup
         .boolean(),
-    'spicy italian sausage': yup
+    spicyItalianSasage: yup
         .boolean(),
-    'artichoke hearts': yup
+    artichokeHearts: yup
         .boolean(),
-    'grilled chicken': yup
+    grilledChicken: yup
         .boolean(),
-    'three cheese': yup
+    threeCheese: yup
         .boolean(),
     onions: yup
         .boolean(),
     pineapple: yup
         .boolean(),
-    'green pepper': yup
+    greenPepper: yup
         .boolean(),
-    'extra cheese': yup
+    extraCheese: yup
         .boolean(),
 });
 

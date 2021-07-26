@@ -20,23 +20,27 @@ const RadioInput = Styled.input`
 
 
 const toppingsData = [
-    { name: 'pepperoni' }, { name: 'sausage' }, { name: 'diced tomatos' }, { name: 'black olives' },
-    { name: 'canadian bacon' }, { name: 'roasted garlic' }, { name: 'spicy italian sausage' },
-    { name: 'artichoke hearts' }, { name: 'grilled chicken' }, { name: 'three cheese' },
-    { name: 'onions' }, { name: 'pineapple' }, { name: 'green pepper' }, { name: 'extra cheese' }
+    { name: 'pepperoni' }, { name: 'sausage' }, { name: 'dicedTomatos' }, { name: 'blackOlives' },
+    { name: 'canadianBacon' }, { name: 'roastedGarlic' }, { name: 'spicyItalianSasage' },
+    { name: 'artichokeHearts' }, { name: 'grilledChicken' }, { name: 'threeCheese' },
+    { name: 'onions' }, { name: 'pineapple' }, { name: 'greenPepper' }, { name: ' extraCheese' }
 ]
 
 export default function Form(props) {
     const [toppings] = useState(toppingsData)
-
     const { formValues, change, submit, disabled, errors } = props
 
+    const onChange = event => {
+        const { name, value, type, checked } = event.target;
+        const valueToUse = type === 'checkbox' ? checked : value;
+
+        change(name, valueToUse)
+    }
+    
     const onSubmit = event => {
         event.preventDefault()
         submit()
     }
-
-
 
     return(
         <div className='pizza-container'>
@@ -49,7 +53,7 @@ export default function Form(props) {
                     <h5>Choice of Size</h5><div className='errors'>{errors.size}</div>
                     <p>Required.</p>
                 </Headings>
-                <select id="size-dropdown" name="size" value={formValues.size} onChange={change}>
+                <select id="size-dropdown" name="size" value={formValues.size} onChange={onChange}>
                     <option value=''>Select</option>
                     <option value='s'>Small</option>
                     <option value='m'>Medium</option>
@@ -64,31 +68,35 @@ export default function Form(props) {
                     <RadioInput
                         type='radio'
                         id='top-radio'
+                        className='choice'
                         name='sauce'
                         value='Original Red'
-                        onChange={change}
+                        onChange={onChange}
                         checked={formValues.sauce === "Original Red"}
                     /><label className="choice">Original Red</label><br/>
                     <RadioInput
                         type='radio'
                         name='sauce'
+                        className='choice'
                         value='Garlic Ranch'
-                        onChange={change}
+                        onChange={onChange}
                         checked={formValues.sauce === "Garlic Ranch"}
                     /><label className="choice">Garlic Ranch</label><br/>
                     <RadioInput
                         type='radio'
                         name='sauce'
+                        className='choice'
                         value='BBQ Sauce'
-                        onChange={change}
+                        onChange={onChange}
                         checked={formValues.sauce === "BBQ Sauce"}
                     /><label className="choice">BBQ Sauce</label><br/>
                     <RadioInput
                         type='radio'
                         id='bottom-radio'
                         name='sauce'
+                        className='choice'
                         value='Spinach Alfredo'
-                        onChange={change}
+                        onChange={onChange}
                         checked={formValues.sauce === "Spinach Alfredo"}
                     /><label className="choice">Spinach Alfredo</label><br/>
                 </div>
@@ -106,7 +114,7 @@ export default function Form(props) {
                         type='checkbox'
                         name={topping.name}
                         className='check'
-                        onChange={change}
+                        onChange={onChange}
                         checked={formValues[`${topping.name}`]}
                     /><div className="choice" style={{textTransform: "capitalize"}} >{topping.name}</div>
                     </div>
@@ -127,7 +135,7 @@ export default function Form(props) {
                     id='special-text'
                     name='special'
                     value={formValues.value}
-                    onChange={change}
+                    onChange={onChange}
                     placeholder="Anything else you'd like to add?">
                 </TextInput>
 
@@ -137,7 +145,7 @@ export default function Form(props) {
                     id='name-input'
                     name='name'
                     value={formValues.value}
-                    onChange={change}
+                    onChange={onChange}
                     placeholder="Name for the order.">
                 </TextInput>
                 <div className='errors name'>{errors.name}</div>
