@@ -20,10 +20,10 @@ const RadioInput = Styled.input`
 
 
 const toppingsData = [
-    { name: 'diced tomatos' }, { name: 'sausage' }, { name: 'black olives' }, { name: 'canadian bacon' },
-    { name: 'roasted garlic' }, { name: 'spicy italian sausage' }, { name: 'artichoke hearts' }, 
-    { name: 'grilled chicken' }, { name: 'three cheese' }, { name: 'onions' }, { name: 'pineapple' },
-    { name: 'green pepper' }, { name: 'extra cheese' }
+    { name: 'pepperoni' }, { name: 'sausage' }, { name: 'diced tomatos' }, { name: 'black olives' },
+    { name: 'canadian bacon' }, { name: 'roasted garlic' }, { name: 'spicy italian sausage' },
+    { name: 'artichoke hearts' }, { name: 'grilled chicken' }, { name: 'three cheese' },
+    { name: 'onions' }, { name: 'pineapple' }, { name: 'green pepper' }, { name: 'extra cheese' }
 ]
 
 export default function Form(props) {
@@ -98,30 +98,7 @@ export default function Form(props) {
                     <p>Choose up to 10.</p>
                 </Headings>
                 <div className="checkbox-wrapper">
-                    <div className="checkbox-container">
-                        <input
-                            type='checkbox'
-                            name='pepperoni'
-                            className='check'
-                            onChange={change}
-                            checked={formValues.pepperoni}
-                        />
-                        <div className="choice">Pepperoni</div>
-                    </div>
-
-                    <div className="checkbox-container">
-                        <input
-                            type='checkbox'
-                            name={toppingsData.name}
-                            className='check'
-                            onChange={change}
-                            checked={formValues.sausage}
-                        />
-                        <div className="choice">{toppingsData[0].name}</div>
-                    </div>
-
-                {toppings.map((topping, idx, props) => {
-                    const { change } = props
+                {toppings.map((topping, idx) => {
 
                     return (
                     <div key={idx} className="checkbox-container">
@@ -130,7 +107,7 @@ export default function Form(props) {
                         name={topping.name}
                         className='check'
                         onChange={change}
-                        checked={formValues.name === `${topping.name}`}
+                        checked={formValues[`${topping.name}`]}
                     /><div className="choice" style={{textTransform: "capitalize"}} >{topping.name}</div>
                     </div>
                 )})}

@@ -8,11 +8,13 @@ import Home from './components/Home.js'
 import Form from './components/Form.js'
 
 // this let's our code know what key's to expect - what we will 'name' our inputs
-const initialValues = { size: "", sauce: "", pepperoni: false, sausage: false, substitute: false, special: '', name: '' }
-const initialErrors = { size: "", sauce: "", pepperoni: false, sausage: false, 'diced tomatoes': false,
+const initialValues = { size: "", sauce: "", pepperoni: false, sausage: false, 'diced tomatoes': false,
   'black olives': false, 'canadian bacon': false, 'roasted garlic': false, 'spicy italian sausage': false,
   'artichoke hearts': false, 'grilled chicken': false, 'three cheese': false, 'onions': false,
-  pineapple: false, 'green pepper': false, 'extra cheese': false, 'diced tomatoes': false,name: '' }
+  pineapple: false, 'green pepper': false, 'extra cheese': false, 'diced tomatos': false,name: '' }
+
+const initialErrors = { name: '', size: ''}
+
 
 export default function App() {
   const [orders, setOrders] = useState([])
@@ -27,7 +29,6 @@ const postNewOrder = newOrder => {
   axios.post('https://reqres.in/api/orders', newOrder)
   .then(res => {
     setOrders([res.data.data, ...orders])
-    console.log(`This is orders: ${orders}`)
   })
   .catch(err => {
     // console.log(err)
@@ -71,7 +72,7 @@ const formSubmit = (event) => {
     pineapple: formValues.pineapple,
     'green pepper': formValues['green pepper'],
     'extra cheese': formValues['extra cheese'],
-    substitute: formValues.substiute,
+    // substitute: formValues.substitute,
     special: formValues.special,
     name: formValues.name
   }
